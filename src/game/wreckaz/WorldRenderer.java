@@ -31,7 +31,6 @@ public class WorldRenderer {
         cam.setViewportAndMatrices();
         renderBackground();
         renderObjects();
-        renderExplosions();
     }
     
     public void renderBackground() {
@@ -66,48 +65,50 @@ public class WorldRenderer {
     
         gl.glColor4f(1, 1, 1, 1);
         
-        renderPlayer();
+        renderShips();
         
         gl.glDisable(GL10.GL_BLEND);
     }
     
-    private void renderPlayer() {
-    	batcher.beginBatch(Assets.playerItems);
-    	
-    	// Assign correct camera position to follow the player.  Don't overlap out of bounds
-    		//cam.position.x = world.player.position.x;
-    		//cam.position.y = world.player.position.y;
+    private void renderShips()
+    {
+    	batcher.beginBatch(Assets.tileMapItems);
        
-    	// Draw the player sprite
-        batcher.drawSprite(world.player.position.x, world.player.position.y , Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT, Assets.player);
-
+    	for (Ship s : world.ships) {
+    		batcher.drawSprite(s.position.x, s.position.y , s.bounds.width, s.bounds.height, Assets.redTile);
+    		for (ShipRoom r : s.rooms) {
+    			batcher.drawSprite(r.position.x, r.position.y , r.bounds.width, r.bounds.height, Assets.blueTile);
+    		}
+		}
+ 
         batcher.endBatch();
     }
+ 
     
-    private void renderExplosions() {
-      
-        GL10 gl = glGraphics.getGL();
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glClear(GL10.GL_DEPTH_BUFFER_BIT);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-	  	try {
-
-			batcher.beginBatch(Assets.tileMapItems);
-
-	        for(int j = 0; j < world.explosion.particles.size(); j++) {
-	        	
-	            Particle par = world.explosion.particles.get(j);
-	            gl.glColor4f(1, 1, 1, par.alpha);
-	      	  	batcher.drawSprite(par.x, par.y , 0.5f, 0.5f, Assets.redTile);
-	      	  	
-	        }
-        
-	        //gl.glDisable(GL10.GL_BLEND);
-	        batcher.endBatch();
-	        
-		} catch (Exception e) {}
-	    gl.glColor4f(1, 1, 1, 1);
-    }
+//    private void renderExplosions() {
+//      
+//        GL10 gl = glGraphics.getGL();
+//        gl.glEnable(GL10.GL_BLEND);
+//        gl.glClear(GL10.GL_DEPTH_BUFFER_BIT);
+//        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+//	  	try {
+//
+//			batcher.beginBatch(Assets.tileMapItems);
+//
+//	        for(int j = 0; j < world.explosion.particles.size(); j++) {
+//	        	
+//	            Particle par = world.explosion.particles.get(j);
+//	            gl.glColor4f(1, 1, 1, par.alpha);
+//	      	  	batcher.drawSprite(par.x, par.y , 0.5f, 0.5f, Assets.redTile);
+//	      	  	
+//	        }
+//        
+//	        //gl.glDisable(GL10.GL_BLEND);
+//	        batcher.endBatch();
+//	        
+//		} catch (Exception e) {}
+//	    gl.glColor4f(1, 1, 1, 1);
+//    }
 }
 
 

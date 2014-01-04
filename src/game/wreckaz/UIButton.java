@@ -3,7 +3,6 @@ package game.wreckaz;
 import com.bag.lib.GameObject;
 import com.bag.lib.gl.TextureRegion;
 
-
 public class UIButton extends GameObject{
 
 	public static int STATE_IDLE 	= 0;
