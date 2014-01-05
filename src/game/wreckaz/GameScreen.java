@@ -20,9 +20,6 @@ public class GameScreen extends GLScreen {
     static final int GAME_LEVEL_END = 3;
     static final int GAME_OVER 		= 4;
     
-    // Dpad's positions
-    static final int JOYSTICK_SIZE	= 128;
-    
     // Screen size
     static final int SCREEN_WIDTH	= 800;
     static final int SCREEN_HEIGHT	= 480;
@@ -31,8 +28,8 @@ public class GameScreen extends GLScreen {
     Camera2D 		guiCam;
     Vector2 		touchPoint;
 
-    float 			angle;
-    SpriteBatcher 	batcher;  
+    SpriteBatcher 	batcher;
+    GameUI			gameUI;
     
     World 			world;
     WorldListener 	worldListener;
@@ -42,22 +39,13 @@ public class GameScreen extends GLScreen {
     float 			elapsedTime;
     
 	boolean 		gameOverTouch = false;
-
 	
     public GameScreen(Game game) {
         super(game);
         
-        // Set state to Ready (ex : waiting touch to begin)
-        state = GAME_READY;
-        
-        // Create camera with screen coordinates as viewport (to cover the whole screen)
+        state = GAME_READY;     
         guiCam = new Camera2D(glGraphics, SCREEN_WIDTH, SCREEN_HEIGHT);
-        
-        // Prepare the first touch point
         touchPoint = new Vector2();
-        
-        // Create a sprite batcher capable of holding 5000 sprites
-        batcher = new SpriteBatcher(glGraphics, 5000);
         
         // Create a worldListener, to trigger events on the world
         worldListener = new WorldListener() {		
@@ -66,11 +54,11 @@ public class GameScreen extends GLScreen {
 			}
         };
         
-        // Create a world Instance
         world = new World(worldListener);
-        
-        // Create a renderer
+        batcher = new SpriteBatcher(glGraphics, 5000);
         renderer = new WorldRenderer(glGraphics, batcher, world);
+        
+        gameUI = new GameUI(batcher);
         
         // Variables
         startTime = System.currentTimeMillis();
@@ -159,10 +147,10 @@ public class GameScreen extends GLScreen {
 			renderer.render();
 		}
 	    
-//	    guiCam.setViewportAndMatrices();
-//	    gl.glEnable(GL10.GL_BLEND);
-//	    gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-//	    gl.glColor4f(1, 1, 1, 1);
+	    guiCam.setViewportAndMatrices();
+	    gl.glEnable(GL10.GL_BLEND);
+	    gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+	    gl.glColor4f(1, 1, 1, 1);
 	    
 	    //batcher.beginBatch(Assets.gameScreenItems);
 	    
@@ -213,12 +201,7 @@ public class GameScreen extends GLScreen {
 	
 	private void drawUI()
 	{
-		try{
-			batcher.beginBatch(Assets.tileMapItems);
-	
-			
-			batcher.endBatch();
-		} catch(Exception e){ }
+		gameUI.draw();
 	}
 
     @Override

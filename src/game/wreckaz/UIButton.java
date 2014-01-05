@@ -26,5 +26,4 @@ public class UIButton extends GameObject{
 		R_width = width;
 		R_height = height;
 	}
-
 }
