@@ -49,6 +49,7 @@ public class WorldRenderer {
         gl.glColor4f(1, 1, 1, 1);
         
         renderShips();
+        renderProjectiles();
         
         gl.glDisable(GL10.GL_BLEND);
     }
@@ -60,17 +61,34 @@ public class WorldRenderer {
     	for (Ship s : world.ships) {
     		
     		// Ship Body
-    		batcher.drawSprite(s.position.x, s.position.y , s.bounds.width, s.bounds.height, Assets.redTile);
+    		batcher.drawSprite(s.position.x, s.position.y , s.bounds.width, s.bounds.height, s.bodyTexture);
     		
     		// Ship Rooms
     		for (ShipRoom r : s.rooms) {
-    			batcher.drawSprite(r.position.x, r.position.y , r.bounds.width, r.bounds.height, Assets.blueTile);
+    			batcher.drawSprite(r.position.x, r.position.y , r.bounds.width, r.bounds.height, r.bodyTextureHealthy);
     			
     			// Ship Crew ?
+    		}
+    		
+    		// Ship Weapons
+       		for (ShipWeapon w : s.weapons) {
+    			batcher.drawSprite(w.position.x, w.position.y , w.bounds.width, w.bounds.height, w.bodyTexture);
     		}
 		}
  
         batcher.endBatch();
+    }
+    
+    private void renderProjectiles()
+    {
+    	try {
+	    	batcher.beginBatch(Assets.mainMenuItems);
+	    	for (Projectile p : world.projectiles) {
+	    		batcher.drawSprite(p.position.x, p.position.y, p.bounds.width, p.bounds.height, p.asset);
+			}
+	    	batcher.endBatch();
+    	} 
+    	catch(Exception e){}
     }
  
     

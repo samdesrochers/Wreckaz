@@ -16,8 +16,8 @@ public class GameUI {
 	{
 	    // UI Declaration
 	    UIButtons = new ArrayList<UIButton>();
-	    button1 = new UIButton(100, 40, 160, 35, Assets.blueTile, Assets.redTile);
-	    button2 = new UIButton(400, 40, 160, 35, Assets.blueTile, Assets.redTile);
+	    button1 = new UIButton(100, 50, 160, 35, Assets.blueTile, Assets.redTile);
+	    button2 = new UIButton(400, 50, 160, 35, Assets.blueTile, Assets.redTile);
 	    
 	    UIButtons.add(button1);
 	    UIButtons.add(button2);

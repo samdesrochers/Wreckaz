@@ -88,7 +88,8 @@ public class MainMenuScreen extends GLScreen {
             if(event.type == TouchEvent.TOUCH_UP) { 
                 if(playButton.state == UIButton.STATE_PRESSED) {
                 	changeScreen = true;
-                	screen = new GameScreen(game); 
+                	GameScreen.makeInstance(game);
+                	screen = GameScreen.getInstance(); 
                 	playButton.state = UIButton.STATE_IDLE;
                 }
             }

@@ -16,6 +16,8 @@ import game.wreckaz.World.WorldListener;
 
 public class GameScreen extends GLScreen {
 	
+	public static GameScreen instance;
+	
 	// States 
     static final int GAME_READY 	= 0;    
     static final int GAME_RUNNING 	= 1;
@@ -23,11 +25,18 @@ public class GameScreen extends GLScreen {
     static final int GAME_LEVEL_END = 3;
     static final int GAME_OVER 		= 4;
     
+    // Touch States
+    static final int STATE_TOUCH_IDLE = 10;
+    static final int STATE_TOUCH_WEAPON_SELECTED = 11;
+    static final int STATE_TOUCH_MEMBER_SELECTED = 12;
+    
     // Screen size
     static final int SCREEN_WIDTH	= 800;
     static final int SCREEN_HEIGHT	= 480;
 
     int 			state;
+    int 			touchState;
+    
     Camera2D 		guiCam;
     Vector2 		touchPoint;
 
@@ -43,10 +52,28 @@ public class GameScreen extends GLScreen {
     
 	boolean 		gameOverTouch = false;
 	
+	public static void makeInstance(Game game)
+	{
+		if(GameScreen.instance == null) {
+			GameScreen.instance = new GameScreen(game);
+		}
+	}
+	
+	public static GameScreen getInstance()
+	{
+		// Sketchy singleton pattern inherited from framework architecture and the need to pass a unique "game".
+		if(instance == null){	// If null (SHOULD NEVER OCCUR) kill the game
+			throw new RuntimeException("No instance for GameScreen - Aborting");
+		}
+		return instance;
+	}
+	
     public GameScreen(Game game) {
         super(game);
         
-        state = GAME_READY;     
+        state = GAME_READY;
+        touchState = STATE_TOUCH_IDLE;
+        
         guiCam = new Camera2D(glGraphics, SCREEN_WIDTH, SCREEN_HEIGHT);
         touchPoint = new Vector2();
         
@@ -54,6 +81,7 @@ public class GameScreen extends GLScreen {
         worldListener = new WorldListener() {		
 			public int getTime() {
 				return (int)elapsedTime;
+				
 			}
         };
         
@@ -67,7 +95,12 @@ public class GameScreen extends GLScreen {
         startTime = System.currentTimeMillis();
         elapsedTime = 0;
     }
-
+    
+	/**************************************************
+	 * 
+	 * 	GAMESCREEN UPDATE SECTION
+	 * 
+	 **************************************************/
 	@Override
 	public void update(float deltaTime) {
 	    
@@ -108,16 +141,10 @@ public class GameScreen extends GLScreen {
 	        TouchEvent event = touchEvents.get(i);
 	        touchPoint.set(event.x, event.y);
 	        guiCam.touchToWorld(touchPoint);
-	        	        
-	        if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
- 	
-	        }
-	        else if(event.type == TouchEvent.TOUCH_UP){
-                if(OverlapTester.pointInRectangle(gameUI.button1.bounds, touchPoint)) {
-                	Log.d("Test", "Touched");
-                	gameUI.button1.bounds.width -= 10;
-                }	
-	        } 
+	        
+	        UITouchHandler(event, touchPoint);
+	        worldTouchHandler(event, touchPoint);
+	        
 	    }    
 	    elapsedTime += deltaTime;
 	    
@@ -136,12 +163,104 @@ public class GameScreen extends GLScreen {
 	        TouchEvent event = touchEvents.get(i);
 	        touchPoint.set(event.x, event.y);
 	        guiCam.touchToWorld(touchPoint);
-	        
-
-	        
 	    }
 	}
+	
+	private void worldTouchHandler(TouchEvent event, Vector2 point)
+	{
+		point.x = (point.x/SCREEN_WIDTH) * WorldRenderer.FRUSTUM_WIDTH;
+		point.y = (point.y/SCREEN_HEIGHT) * WorldRenderer.FRUSTUM_HEIGHT;
+		
+		switch (touchState) {
+		
+		// No prior touch states detected
+		case STATE_TOUCH_IDLE:
+			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+	         	
+	        } else if(event.type == TouchEvent.TOUCH_UP){
+	
+	        }
+			break;
+			
+		// User previously touched a ship member
+		case STATE_TOUCH_MEMBER_SELECTED:
+			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+	         	
+	        } else if(event.type == TouchEvent.TOUCH_UP){
+	
+	        }
+			break;
+			
+		// User previously touched a weapon in the UI
+		case STATE_TOUCH_WEAPON_SELECTED:
+			
+			// Touch needs to be in "enemy territory" (right side of screen)
+			if(point.y >= 2 && point.x > 8) {
+				if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+		         	
+		        } else if(event.type == TouchEvent.TOUCH_UP){
+		        	Log.d("Test", "State Touch - Shooting");
+		        	world.playerShip.shoot(point);
+		        	touchState = STATE_TOUCH_IDLE;
+		        }
+				break;
+			}
 
+		default:
+			break;
+		}
+	}
+	
+	// Defines interaction with UI Elements according to different states
+	private void UITouchHandler(TouchEvent event, Vector2 point)
+	{
+		switch (touchState) {
+		
+		// No prior touch states detected
+		case STATE_TOUCH_IDLE:
+			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+	         	
+	        } else if(event.type == TouchEvent.TOUCH_UP){
+	        	if(OverlapTester.pointInRectangle(gameUI.button1.bounds, point)) {
+   	
+	            	// If weapon is ready to fire, allow selection
+	            	if(world.playerShip.selectWeapon(0)) {
+	            		Log.d("Test", "State Touch - Weapon Selected");
+	            		touchState = STATE_TOUCH_WEAPON_SELECTED;
+	            	} 
+	            }	
+	        }
+			break;
+			
+		// User previously touched a ship member
+		case STATE_TOUCH_MEMBER_SELECTED:
+			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+	         	
+	        } else if(event.type == TouchEvent.TOUCH_UP){
+	
+	        }
+			break;
+			
+		// User previously touched a weapon in the UI
+		case STATE_TOUCH_WEAPON_SELECTED:
+			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
+	         	
+	        } else if(event.type == TouchEvent.TOUCH_UP){
+	
+	        }
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**************************************************
+	 * 
+	 * 	GAMESCREEN DRAWING SECTION
+	 * 
+	 **************************************************/
+	
 	@Override
 	public void present(float deltaTime) {
 		
