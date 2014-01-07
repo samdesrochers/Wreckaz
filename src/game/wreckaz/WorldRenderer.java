@@ -33,36 +33,19 @@ public class WorldRenderer {
         renderObjects();
     }
     
-    public void renderBackground() {
-    
-//       batcher.beginBatch(Assets.tileMapItems); 
-//       TextureRegion asset = null;
-//       // Tiles map rendering!
-//       for(int i = 0; i < World.WORLD_WIDTH; i++){
-//        	for(int j = 0; j < World.WORLD_HEIGHT; j++){
-//        		
-//        		if(world.level[i][j] == 1)
-//        			asset = Assets.redTile;       
-//        		else if(world.level[i][j] == 2)
-//        			asset = Assets.blueTile;     
-//        		
-//        		batcher.drawSprite(i, j , 1.0f, 1.0f, asset);
-//        	}
-//       }
-//        
-//        batcher.endBatch();
-    	
+    public void renderBackground() {	
     	batcher.beginBatch(Assets.mainMenuItems);
     	batcher.drawSprite(World.WORLD_WIDTH/2, World.WORLD_HEIGHT/2, World.WORLD_WIDTH, World.WORLD_HEIGHT, Assets.mainMenuBackground);
     	batcher.endBatch();
     }
     
     public void renderObjects() {
+    	
+    	// Setup (Required)
         GL10 gl = glGraphics.getGL();
         gl.glEnable(GL10.GL_BLEND);
         gl.glEnable(GL10.GL_LINE_SMOOTH);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-    
         gl.glColor4f(1, 1, 1, 1);
         
         renderShips();
@@ -75,9 +58,15 @@ public class WorldRenderer {
     	batcher.beginBatch(Assets.tileMapItems);
        
     	for (Ship s : world.ships) {
+    		
+    		// Ship Body
     		batcher.drawSprite(s.position.x, s.position.y , s.bounds.width, s.bounds.height, Assets.redTile);
+    		
+    		// Ship Rooms
     		for (ShipRoom r : s.rooms) {
     			batcher.drawSprite(r.position.x, r.position.y , r.bounds.width, r.bounds.height, Assets.blueTile);
+    			
+    			// Ship Crew ?
     		}
 		}
  

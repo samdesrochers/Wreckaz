@@ -31,9 +31,9 @@ public class GameUI {
 			batcher.beginBatch(Assets.tileMapItems);
 			for (UIButton u : this.UIButtons) {
 				if(u.state == UIButton.STATE_IDLE)
-					batcher.drawSprite(u.position.x, u.position.y, u.R_width, u.R_height, u.idleState);
+					batcher.drawSprite(u.position.x, u.position.y, u.bounds.width, u.bounds.height, u.idleState);
 				else
-					batcher.drawSprite(u.position.x, u.position.y, u.R_width, u.R_height, u.pressedState);
+					batcher.drawSprite(u.position.x, u.position.y, u.bounds.width, u.bounds.height, u.pressedState);
 			}
 			batcher.endBatch();
 		} catch(Exception e){}

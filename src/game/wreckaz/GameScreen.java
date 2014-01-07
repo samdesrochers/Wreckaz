@@ -3,11 +3,14 @@ package game.wreckaz;
 import java.util.List;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
+
 import com.bag.lib.Game;
 import com.bag.lib.Input.TouchEvent;
 import com.bag.lib.gl.Camera2D;
 import com.bag.lib.gl.SpriteBatcher;
 import com.bag.lib.impl.GLScreen;
+import com.bag.lib.math.OverlapTester;
 import com.bag.lib.math.Vector2;
 import game.wreckaz.World.WorldListener;
 
@@ -110,7 +113,10 @@ public class GameScreen extends GLScreen {
  	
 	        }
 	        else if(event.type == TouchEvent.TOUCH_UP){
-
+                if(OverlapTester.pointInRectangle(gameUI.button1.bounds, touchPoint)) {
+                	Log.d("Test", "Touched");
+                	gameUI.button1.bounds.width -= 10;
+                }	
 	        } 
 	    }    
 	    elapsedTime += deltaTime;
@@ -130,6 +136,9 @@ public class GameScreen extends GLScreen {
 	        TouchEvent event = touchEvents.get(i);
 	        touchPoint.set(event.x, event.y);
 	        guiCam.touchToWorld(touchPoint);
+	        
+
+	        
 	    }
 	}
 
