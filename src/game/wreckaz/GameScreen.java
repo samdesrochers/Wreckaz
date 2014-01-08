@@ -85,11 +85,11 @@ public class GameScreen extends GLScreen {
 			}
         };
         
-        world = new World(worldListener);
         batcher = new SpriteBatcher(glGraphics, 5000);
-        renderer = new WorldRenderer(glGraphics, batcher, world);
-        
         gameUI = new GameUI(batcher);
+        
+        world = new World(worldListener, gameUI);
+        renderer = new WorldRenderer(glGraphics, batcher, world);
         
         // Variables
         startTime = System.currentTimeMillis();
@@ -168,6 +168,7 @@ public class GameScreen extends GLScreen {
 	
 	private void worldTouchHandler(TouchEvent event, Vector2 point)
 	{
+		// Convert for world coordinate (ex 16:9 rather than 800x480)
 		point.x = (point.x/SCREEN_WIDTH) * WorldRenderer.FRUSTUM_WIDTH;
 		point.y = (point.y/SCREEN_HEIGHT) * WorldRenderer.FRUSTUM_HEIGHT;
 		
@@ -222,11 +223,12 @@ public class GameScreen extends GLScreen {
 	         	
 	        } else if(event.type == TouchEvent.TOUCH_UP){
 	        	if(OverlapTester.pointInRectangle(gameUI.button1.bounds, point)) {
-   	
+	        		
 	            	// If weapon is ready to fire, allow selection
 	            	if(world.playerShip.selectWeapon(0)) {
 	            		Log.d("Test", "State Touch - Weapon Selected");
 	            		touchState = STATE_TOUCH_WEAPON_SELECTED;
+	            		gameUI.button1.state = UIButton.STATE_PRESSED;
 	            	} 
 	            }	
 	        }
@@ -246,7 +248,24 @@ public class GameScreen extends GLScreen {
 			if(event.type == TouchEvent.TOUCH_DRAGGED ||event.type == TouchEvent.TOUCH_DOWN){     
 	         	
 	        } else if(event.type == TouchEvent.TOUCH_UP){
-	
+	        	
+	        	// Unselect if already selected. Select if not
+	        	if(OverlapTester.pointInRectangle(gameUI.button1.bounds, point)) {
+
+	            	// If weapon is ready to fire, allow selection
+	            	if(world.playerShip.weapons.get(0).isSelected) {
+	            		Log.d("Test", "State Touch - Weapon Unselected");
+	            		world.playerShip.weapons.get(0).unselect();
+	            		gameUI.button1.state = UIButton.STATE_READY;
+	            		touchState = STATE_TOUCH_IDLE;
+	            	} else {
+	            		if(world.playerShip.selectWeapon(0)) {
+		            		Log.d("Test", "State Touch - Weapon Selected");
+		            		gameUI.button1.state = UIButton.STATE_IDLE;
+		            		touchState = STATE_TOUCH_WEAPON_SELECTED;
+		            	} 
+	            	}
+	            }
 	        }
 			break;
 

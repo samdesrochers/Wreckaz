@@ -29,13 +29,15 @@ public class World {
     public ArrayList<Projectile> projectiles;
     
     public final WorldListener listener;
+    public GameUI gameUI;
     
     public int state;
 
-    public World(WorldListener listener) {
+    public World(WorldListener listener, GameUI gUI) {
     	
     	this.state = WORLD_STATE_RUNNING;
     	this.listener = listener;
+    	this.gameUI = gUI;
     	
     	ships = new ArrayList<Ship>();
     	projectiles = new ArrayList<Projectile>();
@@ -44,6 +46,7 @@ public class World {
     }
 
 	public void update(float deltaTime) {
+		updateShips(deltaTime);
 		updateProjectiles(deltaTime);
 		updateExplosions(deltaTime);
 	}
@@ -55,6 +58,13 @@ public class World {
 ////	    	player.state = player.previousState;
 ////	    }
 //	}
+	
+	private void updateShips(float deltaTime)
+	{
+		for (Ship s : ships) {
+			s.update(deltaTime);
+		}
+	}
 
 	private void updateExplosions(float deltaTime) 
 	{
@@ -100,8 +110,8 @@ public class World {
 		ArrayList<ShipWeapon> weapons = new ArrayList<ShipWeapon>();
 		
 		ShipWeapon w1 = new ShipWeapon(pCenter.x+1.5f, pCenter.y+2.2f, 1, 1.4f);
-		w1.assignAssets(Assets.redTile, null, null);
-		w1.initialize(3.0f, 30, 0.9f, 10f, "Shoota");
+		w1.assignAssets(Assets.redTile, Assets.blueTile, Assets.redTile);
+		w1.initialize(5.0f, 30, 0.9f, 10f, "Shoota", gameUI.button1);
 		
 		weapons.add(w1);
 		

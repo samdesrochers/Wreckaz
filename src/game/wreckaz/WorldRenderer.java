@@ -82,7 +82,7 @@ public class WorldRenderer {
     private void renderProjectiles()
     {
     	try {
-	    	batcher.beginBatch(Assets.mainMenuItems);
+	    	batcher.beginBatch(Assets.tileMapItems);
 	    	for (Projectile p : world.projectiles) {
 	    		batcher.drawSprite(p.position.x, p.position.y, p.bounds.width, p.bounds.height, p.asset);
 			}

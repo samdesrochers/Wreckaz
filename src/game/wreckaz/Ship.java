@@ -52,7 +52,9 @@ public class Ship extends DynamicGameObject {
 	
 	public void update(float dt)
 	{
-
+		for (ShipWeapon w : weapons) {
+			w.update(dt);
+		}
 	}
 	
 	public boolean selectWeapon(int index)
@@ -71,7 +73,7 @@ public class Ship extends DynamicGameObject {
 		return true;
 	}
 	
-	public void shoot(Vector2 dest)
+	public void shoot(Vector2 destination)
 	{
 		// Test if there is an enemy ship
 //		if(GameScreen.getInstance().world.ennemyShip == null)
@@ -84,14 +86,14 @@ public class Ship extends DynamicGameObject {
 		Projectile proj = new Projectile(
 				selectedWeapon.position.x + selectedWeapon.bounds.width/2, 
 				selectedWeapon.position.y + selectedWeapon.bounds.height/2, 
-				1,1, 
-				dest, Assets.redTile);
+				0.5f, 0.5f, 
+				destination, Assets.redTile);
 		proj.initialize(selectedWeapon.damage, selectedWeapon.hitPercentage, selectedWeapon.projectileSpeed);
 		
 		GameScreen.getInstance().world.projectiles.add(proj);
 		
 		// Unselect
-		selectedWeapon.isSelected = false;
+		selectedWeapon.reset();
 		selectedWeapon = null;
 	}
 }

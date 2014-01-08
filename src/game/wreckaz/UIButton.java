@@ -7,21 +7,27 @@ public class UIButton extends GameObject{
 
 	public static int STATE_IDLE 	= 0;
 	public static int STATE_PRESSED	= 1;
+	public static int STATE_READY	= 2;
 	
-	public TextureRegion idleState;
-	public TextureRegion pressedState;
+	public TextureRegion idleAsset;
+	public TextureRegion pressedAsset;
+	public TextureRegion readyAsset;
 	
 	public float R_width;
 	public float R_height;
 	
 	public int state;
+	public boolean isReady;
 	
-	public UIButton(float x, float y, float width, float height, TextureRegion idle, TextureRegion pressed) {
+	public UIButton(float x, float y, float width, float height, TextureRegion idle, TextureRegion pressed, TextureRegion ready) {
 		super(x, y, width, height);
 		
-		idleState = idle;
-		pressedState = pressed;
+		idleAsset = idle;
+		pressedAsset = pressed;
+		readyAsset = ready;
+		
 		state = STATE_IDLE;
+		isReady = false;
 		
 		R_width = width;
 		R_height = height;

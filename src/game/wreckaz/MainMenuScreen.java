@@ -47,8 +47,8 @@ public class MainMenuScreen extends GLScreen {
         Assets.load((GLGame) game);
         
         // UI Buttons and the array with all of their assets
-        playButton = new UIButton(500,200,200,200,Assets.blueTile,Assets.redTile);
-        highScoresButton = new UIButton(200,200,200,200,Assets.blueTile,Assets.redTile);
+        playButton = new UIButton(500,200,200,200,Assets.blueTile,Assets.redTile, null);
+        highScoresButton = new UIButton(200,200,200,200,Assets.blueTile,Assets.redTile, null);
         buttonsAssets = new ArrayList<UIButton>();
         buttonsAssets.add(playButton);
         buttonsAssets.add(highScoresButton);  

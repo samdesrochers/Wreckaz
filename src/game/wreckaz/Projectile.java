@@ -3,7 +3,6 @@ package game.wreckaz;
 import com.bag.lib.DynamicGameObject;
 import com.bag.lib.gl.TextureRegion;
 import com.bag.lib.math.Vector2;
-import android.util.FloatMath;
 import android.util.Log;
 
 public class Projectile extends DynamicGameObject{
