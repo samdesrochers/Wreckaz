@@ -63,7 +63,7 @@ public class GameScreen extends GLScreen {
 	{
 		// Sketchy singleton pattern inherited from framework architecture and the need to pass a unique "game".
 		if(instance == null){	// If null (SHOULD NEVER OCCUR) kill the game
-			throw new RuntimeException("No instance for GameScreen - Aborting");
+			throw new RuntimeException("No instance for GameScreen - Aborting - Rethink your code");
 		}
 		return instance;
 	}
@@ -80,8 +80,7 @@ public class GameScreen extends GLScreen {
         // Create a worldListener, to trigger events on the world
         worldListener = new WorldListener() {		
 			public int getTime() {
-				return (int)elapsedTime;
-				
+				return (int)elapsedTime;			
 			}
         };
         
@@ -153,7 +152,6 @@ public class GameScreen extends GLScreen {
 	}
 	
 	private void updatePaused() {
-		// game.setScreen(new MainMenuScreen(game));
 	}	
 	
 	private void updateGameOver() {
@@ -357,7 +355,8 @@ public class GameScreen extends GLScreen {
     }
 
     @Override
-    public void resume() {        
+    public void resume() {   
+    	
     }
 
     @Override

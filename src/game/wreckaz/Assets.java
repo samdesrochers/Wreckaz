@@ -10,6 +10,11 @@ public class Assets {
     public static Texture mainMenuItems;
     public static TextureRegion mainMenuBackground;
     
+	// Game Backgrounds
+    public static Texture gameBackgroundItems;
+    public static TextureRegion gameBackground_1;
+    public static TextureRegion gameBackground_2;
+    
     // Game Interface
     
     // Game Objects
@@ -31,6 +36,10 @@ public class Assets {
     	mainMenuItems = new Texture(game, "mapPack1.png");
     	mainMenuBackground = new TextureRegion(mainMenuItems, 0, 0, 800, 480);
     	
+    	gameBackgroundItems = new Texture(game, "backgroundsMap.png");
+    	gameBackground_1 = new TextureRegion(mainMenuItems, 0, 0, 800, 480);
+    	gameBackground_2 = new TextureRegion(mainMenuItems, 0, 0, 800, 480);
+    	
     	// Game Screen 
     	tileMapItems = new Texture(game, "tilemap.png");
     	blueTile = new TextureRegion(tileMapItems, 0, 0, 64, 64);
@@ -46,6 +55,7 @@ public class Assets {
     	tileMapItems.reload();
     	playerItems.reload();
     	mainMenuItems.reload();
+    	gameBackgroundItems.reload();
 
     	//if(Settings.soundEnabled )
            // music.play();

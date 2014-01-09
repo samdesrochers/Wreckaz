@@ -34,8 +34,8 @@ public class WorldRenderer {
     }
     
     public void renderBackground() {	
-    	batcher.beginBatch(Assets.mainMenuItems);
-    	batcher.drawSprite(World.WORLD_WIDTH/2, World.WORLD_HEIGHT/2, World.WORLD_WIDTH, World.WORLD_HEIGHT, Assets.mainMenuBackground);
+    	batcher.beginBatch(Assets.gameBackgroundItems);
+    	batcher.drawSprite(World.WORLD_WIDTH/2, World.WORLD_HEIGHT/2, World.WORLD_WIDTH, World.WORLD_HEIGHT, Assets.gameBackground_1);
     	batcher.endBatch();
     }
     
