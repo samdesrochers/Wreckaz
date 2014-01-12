@@ -111,7 +111,7 @@ public class World {
 		
 		ShipWeapon w1 = new ShipWeapon(pCenter.x+1.5f, pCenter.y+2.2f, 1, 1.4f);
 		w1.assignAssets(Assets.redTile, Assets.blueTile, Assets.redTile);
-		w1.initialize(5.0f, 30, 0.9f, 10f, "Shoota", gameUI.button1);
+		w1.initialize(5.0f, 30, 0.9f, 18f, new Vector2(0.5f, 0.5f), gameUI.button1);
 		
 		weapons.add(w1);
 		

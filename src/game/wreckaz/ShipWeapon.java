@@ -2,6 +2,7 @@ package game.wreckaz;
 
 import com.bag.lib.DynamicGameObject;
 import com.bag.lib.gl.TextureRegion;
+import com.bag.lib.math.Vector2;
 
 public class ShipWeapon extends DynamicGameObject {
 
@@ -12,16 +13,17 @@ public class ShipWeapon extends DynamicGameObject {
 	public int damage;
 	public float hitPercentage;
 	public float projectileSpeed;
-	public String name;
 	
 	public boolean isSelected;
 	public boolean isFireReady;
 	public boolean isFiring;
 	
+	public Vector2 projectileSize;
+	
 	private boolean isSwitched;
 	private float reloadTime;
 	private float time;
-	
+
 	private UIButton linkedButton;
 	
 	public ShipWeapon(float x, float y, float width, float height) {
@@ -31,16 +33,16 @@ public class ShipWeapon extends DynamicGameObject {
 	public void reset()
 	{
 		isSelected = false;
-		isFireReady = false; // DEBUG
+		isFireReady = false; 
 		isFiring = false;
 		isSwitched = false;
 		linkedButton.state = UIButton.STATE_IDLE;
 		time = 0.0f;
 	}
 		
-	public void initialize(float fixedReloadTime, int dmg, float hit, float speed, String initName, UIButton button)
+	public void initialize(float fixedReloadTime, int dmg, float hit, float speed, Vector2 projSize, UIButton button)
 	{
-		this.name = initName;
+		this.projectileSize = projSize; 
 		this.reloadTime = fixedReloadTime;
 		this.damage = dmg;
 		this.hitPercentage = hit;

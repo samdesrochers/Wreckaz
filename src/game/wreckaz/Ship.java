@@ -86,7 +86,7 @@ public class Ship extends DynamicGameObject {
 		Projectile proj = new Projectile(
 				selectedWeapon.position.x + selectedWeapon.bounds.width/2, 
 				selectedWeapon.position.y + selectedWeapon.bounds.height/2, 
-				0.5f, 0.5f, 
+				selectedWeapon.projectileSize.x, selectedWeapon.projectileSize.y, 
 				destination, Assets.redTile);
 		proj.initialize(selectedWeapon.damage, selectedWeapon.hitPercentage, selectedWeapon.projectileSpeed);
 		
